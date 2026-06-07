@@ -11,18 +11,17 @@ export type Transaction = {
   description?: string;
 };
 
+const STORAGE_KEY = 'duitku-v1';
+
 export function useFinanceStore() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Persistence Key
-  const STORAGE_KEY = 'duitku-v1';
-
-  // Load from localStorage on mount
   useEffect(() => {
     const savedData = localStorage.getItem(STORAGE_KEY);
     if (savedData) {
       try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setTransactions(JSON.parse(savedData));
       } catch (e) {
         console.error('Failed to parse transactions from localStorage', e);
@@ -31,7 +30,6 @@ export function useFinanceStore() {
     setIsHydrated(true);
   }, []);
 
-  // Save to localStorage whenever transactions change
   useEffect(() => {
     if (isHydrated) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
@@ -41,8 +39,8 @@ export function useFinanceStore() {
   const addTransaction = (data: Omit<Transaction, 'id'>) => {
     const newTransaction: Transaction = {
       ...data,
-      id: typeof crypto.randomUUID === 'function' 
-        ? crypto.randomUUID() 
+      id: typeof crypto.randomUUID === 'function'
+        ? crypto.randomUUID()
         : Math.random().toString(36).substring(2, 11),
     };
     setTransactions((prev) => [...prev, newTransaction]);
