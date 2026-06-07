@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@/components/toast-provider";
+import { FinanceProvider } from "@/hooks/use-finance-store";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,8 +38,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <ToastProvider />
+          <FinanceProvider>
+            {children}
+            <ToastProvider />
+          </FinanceProvider>
         </ThemeProvider>
       </body>
     </html>
