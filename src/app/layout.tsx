@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@/components/toast-provider";
+import { OnboardingFlow } from "@/components/onboarding-flow";
 import { FinanceProvider } from "@/hooks/use-finance-store";
+import { BudgetProvider } from "@/hooks/use-budget-store";
+import { RecurringProvider } from "@/hooks/use-recurring-store";
+import { SettingsProvider } from "@/hooks/use-settings-store";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const nunito = Nunito({
+  variable: "--font-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${nunito.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
@@ -38,10 +38,17 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <FinanceProvider>
-            {children}
-            <ToastProvider />
-          </FinanceProvider>
+          <SettingsProvider>
+            <FinanceProvider>
+              <BudgetProvider>
+                <RecurringProvider>
+                  {children}
+                  <ToastProvider />
+                  <OnboardingFlow />
+                </RecurringProvider>
+              </BudgetProvider>
+            </FinanceProvider>
+          </SettingsProvider>
         </ThemeProvider>
       </body>
     </html>

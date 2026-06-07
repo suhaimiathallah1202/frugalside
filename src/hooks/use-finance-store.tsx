@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
+import { useSettings } from './use-settings-store';
 
 export type Transaction = {
   id: string;
@@ -15,6 +16,7 @@ type FinanceStore = {
   transactions: Transaction[];
   isHydrated: boolean;
   addTransaction: (data: Omit<Transaction, 'id'>) => void;
+  updateTransaction: (id: string, data: Omit<Transaction, 'id'>) => void;
   deleteTransaction: (id: string) => void;
   getSummary: () => { totalIncome: number; totalExpense: number };
   getBalance: () => number;
@@ -28,6 +30,7 @@ const STORAGE_KEY = 'duitku-v1';
 export function FinanceProvider({ children }: { children: React.ReactNode }) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isHydrated, setIsHydrated] = useState(false);
+  const { formatCurrency } = useSettings();
 
   useEffect(() => {
     const savedData = localStorage.getItem(STORAGE_KEY);
@@ -65,6 +68,12 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     setTransactions((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
+  const updateTransaction = useCallback((id: string, data: Omit<Transaction, 'id'>) => {
+    setTransactions((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, ...data } : t))
+    );
+  }, []);
+
   const getSummary = useCallback(() => {
     return transactions.reduce(
       (acc, t) => {
@@ -85,24 +94,21 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
   }, [getSummary]);
 
   const formatRupiah = useCallback((amount: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(amount);
-  }, []);
+    return formatCurrency(amount);
+  }, [formatCurrency]);
 
   const value = useMemo(
     () => ({
       transactions,
       isHydrated,
       addTransaction,
+      updateTransaction,
       deleteTransaction,
       getSummary,
       getBalance,
       formatRupiah,
     }),
-    [transactions, isHydrated, addTransaction, deleteTransaction, getSummary, getBalance, formatRupiah]
+    [transactions, isHydrated, addTransaction, updateTransaction, deleteTransaction, getSummary, getBalance, formatRupiah]
   );
 
   return (

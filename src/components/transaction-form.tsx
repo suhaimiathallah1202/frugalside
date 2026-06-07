@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useFinanceStore } from "@/hooks/use-finance-store"
+import { useRecurringStore } from "@/hooks/use-recurring-store"
 import { toast } from "sonner"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -11,6 +12,88 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  UtensilsCrossed,
+  Gamepad2,
+  Car,
+  Shield,
+  TrendingUp,
+  Receipt,
+  Repeat,
+  MoreHorizontal,
+  Briefcase,
+  Zap,
+} from "lucide-react"
+
+type CategoryStyle = {
+  icon: React.ReactNode
+  bg: string
+  fg: string
+}
+
+const CATEGORY_STYLE: Record<string, CategoryStyle> = {
+  Makanan: {
+    icon: <UtensilsCrossed className="h-3.5 w-3.5" />,
+    bg: "bg-orange-100 dark:bg-orange-500/20",
+    fg: "text-orange-600 dark:text-orange-400",
+  },
+  Hiburan: {
+    icon: <Gamepad2 className="h-3.5 w-3.5" />,
+    bg: "bg-purple-100 dark:bg-purple-500/20",
+    fg: "text-purple-600 dark:text-purple-400",
+  },
+  Transportasi: {
+    icon: <Car className="h-3.5 w-3.5" />,
+    bg: "bg-blue-100 dark:bg-blue-500/20",
+    fg: "text-blue-600 dark:text-blue-400",
+  },
+  Asuransi: {
+    icon: <Shield className="h-3.5 w-3.5" />,
+    bg: "bg-teal-100 dark:bg-teal-500/20",
+    fg: "text-teal-600 dark:text-teal-400",
+  },
+  Investasi: {
+    icon: <TrendingUp className="h-3.5 w-3.5" />,
+    bg: "bg-emerald-100 dark:bg-emerald-500/20",
+    fg: "text-emerald-600 dark:text-emerald-400",
+  },
+  Tagihan: {
+    icon: <Receipt className="h-3.5 w-3.5" />,
+    bg: "bg-rose-100 dark:bg-rose-500/20",
+    fg: "text-rose-600 dark:text-rose-400",
+  },
+  Subscription: {
+    icon: <Repeat className="h-3.5 w-3.5" />,
+    bg: "bg-indigo-100 dark:bg-indigo-500/20",
+    fg: "text-indigo-600 dark:text-indigo-400",
+  },
+  Gaji: {
+    icon: <Briefcase className="h-3.5 w-3.5" />,
+    bg: "bg-amber-100 dark:bg-amber-500/20",
+    fg: "text-amber-600 dark:text-amber-400",
+  },
+  "Side Income": {
+    icon: <Zap className="h-3.5 w-3.5" />,
+    bg: "bg-cyan-100 dark:bg-cyan-500/20",
+    fg: "text-cyan-600 dark:text-cyan-400",
+  },
+  Lainnya: {
+    icon: <MoreHorizontal className="h-3.5 w-3.5" />,
+    bg: "bg-gray-100 dark:bg-gray-500/20",
+    fg: "text-gray-600 dark:text-gray-400",
+  },
+}
+
+function CategoryIcon({ name, size = "md" }: { name: string; size?: "sm" | "md" }) {
+  const cfg = CATEGORY_STYLE[name]
+  if (!cfg) return null
+  const dim = size === "sm" ? "w-6 h-6 rounded-md" : "w-7 h-7 rounded-lg"
+  return (
+    <div className={`${dim} ${cfg.bg} ${cfg.fg} flex items-center justify-center flex-shrink-0`}>
+      {cfg.icon}
+    </div>
+  )
+}
 
 const EXPENSE_CATEGORIES = [
   "Makanan",
@@ -41,6 +124,7 @@ interface TransactionFormProps {
 
 export function TransactionForm({ selectedMonth }: TransactionFormProps) {
   const { addTransaction } = useFinanceStore()
+  const { addRecurring } = useRecurringStore()
 
   const [amount, setAmount] = useState("")
   const [category, setCategory] = useState(EXPENSE_CATEGORIES[0])
@@ -48,6 +132,8 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
   const [date, setDate] = useState(new Date().toISOString().split("T")[0])
   const [activeTab, setActiveTab] = useState<"expense" | "income">("expense")
   const [errors, setErrors] = useState<Errors>({})
+  const [isRecurring, setIsRecurring] = useState(false)
+  const [frequency, setFrequency] = useState<"weekly" | "monthly">("monthly")
 
   useEffect(() => {
     if (selectedMonth) {
@@ -93,6 +179,17 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
       description: description.trim() || undefined,
     })
 
+    if (isRecurring) {
+      addRecurring({
+        type: activeTab,
+        amount: numAmount,
+        category,
+        description: description.trim() || undefined,
+        frequency,
+        enabled: true,
+      })
+    }
+
     toast.success(
       activeTab === "expense" ? "Pengeluaran berhasil dicatat" : "Pemasukan berhasil dicatat"
     )
@@ -101,6 +198,8 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
     setDescription("")
     setCategory(categories[0])
     setDate(new Date().toISOString().split("T")[0])
+    setIsRecurring(false)
+    setFrequency("monthly")
     setErrors({})
   }
 
@@ -191,7 +290,10 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
                       value={cat}
                       className="rounded-xl focus:bg-accent focus:text-black cursor-pointer py-3"
                     >
-                      {cat}
+                      <div className="flex items-center gap-2">
+                        <CategoryIcon name={cat} />
+                        <span>{cat}</span>
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -233,6 +335,40 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
                 <p className="text-danger text-xs mt-1.5 px-1 font-medium">{errors.date}</p>
               )}
             </div>
+          </div>
+
+          <div className="flex items-center gap-3 bg-surface-container-low dark:bg-white/[0.03] rounded-2xl p-4 border border-on-surface/5 dark:border-white/5">
+            <button
+              className={`relative w-11 h-6 rounded-full transition-all duration-300 flex-shrink-0 cursor-pointer ${
+                isRecurring ? "bg-accent" : "bg-on-surface/20 dark:bg-white/20"
+              }`}
+              onClick={() => setIsRecurring(!isRecurring)}
+              role="switch"
+              aria-checked={isRecurring}
+              aria-label="Ulangi transaksi"
+            >
+              <span
+                className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ${
+                  isRecurring ? "translate-x-5" : ""
+                }`}
+              />
+            </button>
+            <div className="flex items-center gap-2 flex-1">
+              <Repeat className={`h-4 w-4 ${isRecurring ? "text-accent" : "text-on-surface/30 dark:text-white/30"}`} />
+              <label className="text-sm font-bold text-on-surface dark:text-white cursor-pointer flex-1" onClick={() => setIsRecurring(!isRecurring)}>
+                Ulangi Transaksi
+              </label>
+            </div>
+            {isRecurring && (
+              <select
+                className="bg-surface-container-lowest dark:bg-dark border-none ring-1 ring-on-surface/10 dark:ring-white/10 rounded-xl px-3 py-2 text-xs font-medium text-on-surface dark:text-white outline-none cursor-pointer"
+                value={frequency}
+                onChange={(e) => setFrequency(e.target.value as "weekly" | "monthly")}
+              >
+                <option value="monthly">Bulanan</option>
+                <option value="weekly">Mingguan</option>
+              </select>
+            )}
           </div>
 
           <button

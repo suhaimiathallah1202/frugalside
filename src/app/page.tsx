@@ -1,8 +1,10 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useFinanceStore } from "@/hooks/use-finance-store"
+import { useBudgetStore } from "@/hooks/use-budget-store"
+import { useRecurringStore } from "@/hooks/use-recurring-store"
 import { MainHeader } from "@/components/main-header"
 import { QuickStats } from "@/components/quick-stats"
 import { TransactionForm } from "@/components/transaction-form"
@@ -12,7 +14,9 @@ import { FloatingActionButton } from "@/components/floating-action-button"
 import { Skeleton } from "@/components/skeleton"
 
 export default function Dashboard() {
-  const { transactions, formatRupiah, isHydrated } = useFinanceStore()
+  const { transactions, formatRupiah, isHydrated, addTransaction } = useFinanceStore()
+  const { budgets } = useBudgetStore()
+  const { getDueTransactions, markApplied } = useRecurringStore()
 
   const [currentDate, setCurrentDate] = useState(() => new Date())
 
@@ -82,6 +86,40 @@ export default function Dashboard() {
     [transactions]
   )
 
+  const spendStatus = useMemo(() => {
+    if (balance > 0 && monthlyExpense <= monthlyIncome * 0.7) {
+      return { label: "Safe to spend", color: "bg-white/20 text-white/90", dotColor: "bg-white" }
+    }
+    if (balance > 0 && monthlyExpense <= monthlyIncome) {
+      return { label: "Hemat-hemat", color: "bg-amber-500/30 text-amber-100", dotColor: "bg-amber-300" }
+    }
+    return { label: "Hati-hati", color: "bg-red-500/30 text-red-100", dotColor: "bg-red-300" }
+  }, [balance, monthlyIncome, monthlyExpense])
+
+  const budgetInfo = useMemo(() => {
+    const totalBudget = Object.values(budgets).reduce((acc, v) => acc + v, 0)
+    const categoryBudgets = Object.keys(budgets)
+    const totalSpent = monthlyTransactions
+      .filter((t) => t.type === "expense" && categoryBudgets.includes(t.category))
+      .reduce((acc, t) => acc + t.amount, 0)
+    return { totalBudget, totalSpent, remaining: totalBudget - totalSpent, formatRupiah }
+  }, [budgets, monthlyTransactions, formatRupiah])
+
+  useEffect(() => {
+    if (!isHydrated) return
+    const due = getDueTransactions()
+    for (const item of due) {
+      addTransaction({
+        type: item.type,
+        amount: item.amount,
+        category: item.category,
+        description: item.description,
+        date: new Date().toISOString().split("T")[0],
+      })
+      markApplied(item.id)
+    }
+  }, [isHydrated, getDueTransactions, addTransaction, markApplied])
+
   if (!isHydrated) {
     return (
       <div className="min-h-screen pb-20 transition-colors duration-300 bg-dark text-on-surface dark:text-white">
@@ -105,6 +143,51 @@ export default function Dashboard() {
       <MainHeader />
 
       <main className="max-w-7xl mx-auto px-6 space-y-8">
+        {transactions.length === 0 && (
+          <div className="bg-gradient-to-br from-accent/10 to-primary-fixed/5 border border-accent/20 rounded-3xl p-8 relative overflow-hidden">
+            <div className="absolute -right-10 -top-10 w-48 h-48 bg-accent/10 rounded-full blur-3xl" />
+            <div className="relative">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-3xl">👋</span>
+                <h2 className="text-2xl font-black text-on-surface dark:text-white">
+                  Selamat Datang di FrugalSide
+                </h2>
+              </div>
+              <p className="text-on-surface/60 dark:text-white/60 mb-6 max-w-2xl">
+                Kelola keuanganmu dengan mudah dan menyenangkan. Ikuti 3 langkah sederhana ini untuk memulai:
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                {[
+                  { step: "1", icon: "✏️", title: "Catat Pengeluaran", desc: "Catat setiap pengeluaran harianmu" },
+                  { step: "2", icon: "💵", title: "Tambah Pemasukan", desc: "Catat semua sumber pendapatan" },
+                  { step: "3", icon: "📈", title: "Pantau Grafik", desc: "Lihat distribusi pengeluaranmu" },
+                ].map((item) => (
+                  <div key={item.step} className="flex items-start gap-3 bg-black/5 dark:bg-white/5 rounded-2xl p-4">
+                    <span className="flex-shrink-0 w-8 h-8 bg-accent text-on-primary-fixed rounded-full flex items-center justify-center text-sm font-black">
+                      {item.step}
+                    </span>
+                    <div>
+                      <p className="font-bold text-sm text-on-surface dark:text-white">
+                        {item.icon} {item.title}
+                      </p>
+                      <p className="text-xs text-on-surface/50 dark:text-white/50 mt-0.5">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <button
+                className="bg-accent text-on-primary-fixed font-black py-3 px-6 rounded-2xl hover:brightness-105 dark:hover:brightness-110 transition-all duration-300 transform active:scale-95 shadow-lg hover:shadow-accent/40 cursor-pointer inline-flex items-center gap-2 group text-sm"
+                onClick={() => {
+                  document.querySelector('[data-purpose="transaction-input"]')?.scrollIntoView({ behavior: "smooth" })
+                }}
+              >
+                Mulai Sekarang
+                <span className="group-hover:translate-x-1 transition-transform">→</span>
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Month Navigation */}
         <div className="flex items-center justify-center gap-4" data-purpose="month-navigation">
           <button
@@ -133,11 +216,13 @@ export default function Dashboard() {
           balance={formatRupiah(balance)}
           monthlyIncome={formatRupiah(monthlyIncome)}
           monthlyExpense={formatRupiah(monthlyExpense)}
+          budgetInfo={budgetInfo}
+          spendStatus={spendStatus}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <TransactionForm selectedMonth={currentDate} />
-          <SpendingChart data={chartData} />
+          <SpendingChart data={chartData} transactions={transactions} currentDate={currentDate} />
         </div>
 
         <TransactionHistory transactions={monthlyTransactions} />
