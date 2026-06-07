@@ -184,7 +184,7 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
                 <SelectTrigger className="w-full bg-surface-container-lowest dark:bg-dark border-none ring-1 ring-on-surface/10 dark:ring-white/10 focus:ring-2 focus:ring-accent rounded-2xl p-4 h-auto text-on-surface dark:text-white text-left transition-all outline-none select-none">
                   <SelectValue placeholder="Pilih Kategori" />
                 </SelectTrigger>
-                <SelectContent className="bg-card border border-on-surface/5 dark:border-white/5 rounded-2xl shadow-xl text-on-surface dark:text-white">
+                <SelectContent className="bg-card border border-on-surface/5 dark:border-white/5 shadow-xl text-on-surface dark:text-white">
                   {categories.map((cat) => (
                     <SelectItem
                       key={cat}
