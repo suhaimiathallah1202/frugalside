@@ -2,7 +2,7 @@
 
 export function FloatingActionButton() {
   return (
-    <div className="fixed max-sm:bottom-4 bottom-6 right-6 lg:hidden" data-purpose="mobile-fab">
+    <div className="fixed max-sm:bottom-4 bottom-6 right-6 lg:hidden z-50" data-purpose="mobile-fab">
       <button
         className="w-16 h-16 bg-accent rounded-full flex items-center justify-center shadow-2xl shadow-accent/50 animate-float-ui text-on-primary-fixed hover:scale-105 active:scale-95 transition-transform duration-300 cursor-pointer"
         onClick={() => {
