@@ -162,6 +162,12 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
     if (!date) {
       newErrors.date = "Pilih tanggal transaksi"
     }
+    if (activeTab === "expense" && numAmount > 0) {
+      const balance = getBalance()
+      if (numAmount > balance) {
+        newErrors.amount = "Pengeluaran melebihi saldo! Saldo kamu: Rp" + balance.toLocaleString("id-ID")
+      }
+    }
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -170,11 +176,6 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
     if (!validate()) return
 
     const numAmount = parseFloat(amount.replace(/[^0-9]/g, ""))
-    const balance = getBalance()
-
-    if (activeTab === "expense" && numAmount > balance) {
-      toast.warning("Pengeluaran melebihi saldo!")
-    }
 
     addTransaction({
       type: activeTab,

@@ -62,6 +62,7 @@ export function TransactionEditModal({ transaction, open, onOpenChange }: Transa
   const [category, setCategory] = useState(transaction?.category ?? EXPENSE_CATEGORIES[0])
   const [description, setDescription] = useState(transaction?.description ?? "")
   const [date, setDate] = useState(transaction?.date ?? new Date().toISOString().split("T")[0])
+  const [balanceError, setBalanceError] = useState("")
 
   const categories = type === "expense" ? EXPENSE_CATEGORIES : INCOME_CATEGORIES
 
@@ -69,6 +70,7 @@ export function TransactionEditModal({ transaction, open, onOpenChange }: Transa
     const tab = val as "expense" | "income"
     setType(tab)
     setCategory(tab === "expense" ? EXPENSE_CATEGORIES[0] : INCOME_CATEGORIES[0])
+    setBalanceError("")
   }
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,9 +94,11 @@ export function TransactionEditModal({ transaction, open, onOpenChange }: Transa
       const oldAmount = transaction.type === "expense" ? transaction.amount : 0
       const balanceWithoutOld = balance + oldAmount
       if (numAmount > balanceWithoutOld) {
-        toast.warning("Pengeluaran melebihi saldo!")
+        setBalanceError("Pengeluaran melebihi saldo! Saldo kamu: Rp" + balanceWithoutOld.toLocaleString("id-ID"))
+        return
       }
     }
+    setBalanceError("")
 
     updateTransaction(transaction.id, {
       type,
@@ -138,15 +142,20 @@ export function TransactionEditModal({ transaction, open, onOpenChange }: Transa
               Nominal
             </label>
             <input
-              className="w-full bg-surface-container-lowest dark:bg-dark border-none ring-1 ring-on-surface/10 dark:ring-white/10 focus:ring-2 focus:ring-accent rounded-2xl p-4 text-on-surface dark:text-white placeholder:text-on-surface/30 dark:placeholder:text-white/20 transition-all outline-none"
+              className={`w-full bg-surface-container-lowest dark:bg-dark border-none ring-1 ${
+                balanceError ? "ring-danger" : "ring-on-surface/10 dark:ring-white/10"
+              } focus:ring-2 focus:ring-accent rounded-2xl p-4 text-on-surface dark:text-white placeholder:text-on-surface/30 dark:placeholder:text-white/20 transition-all outline-none`}
               placeholder="Contoh: 50000"
               type="text"
               inputMode="numeric"
               value={amount}
-              onChange={handleAmountChange}
-              onFocus={handleAmountFocus}
+              onChange={(e) => { handleAmountChange(e); setBalanceError("") }}
+              onFocus={(e) => { handleAmountFocus(); setBalanceError("") }}
               autoFocus
             />
+            {balanceError && (
+              <p className="text-danger text-xs mt-1.5 px-1 font-medium">{balanceError}</p>
+            )}
           </div>
 
           <div>
