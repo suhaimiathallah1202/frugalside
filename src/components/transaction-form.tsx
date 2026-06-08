@@ -309,7 +309,7 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
               </label>
               <input
                 className="w-full bg-surface-container-lowest dark:bg-dark border-none ring-1 ring-on-surface/10 dark:ring-white/10 focus:ring-2 focus:ring-accent rounded-2xl p-4 text-on-surface dark:text-white placeholder:text-on-surface/30 dark:placeholder:text-white/20 transition-all outline-none"
-                placeholder="Contoh: Makan siang bakso, dll. (Opsional)"
+                placeholder={activeTab === "expense" ? "Contoh: Makan siang bakso, dll. (Opsional)" : "Bonus, THR, dll. (Opsional)"}
                 type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
