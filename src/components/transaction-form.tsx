@@ -123,7 +123,7 @@ interface TransactionFormProps {
 }
 
 export function TransactionForm({ selectedMonth }: TransactionFormProps) {
-  const { addTransaction } = useFinanceStore()
+  const { addTransaction, getBalance } = useFinanceStore()
   const { addRecurring } = useRecurringStore()
 
   const [amount, setAmount] = useState("")
@@ -170,6 +170,11 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
     if (!validate()) return
 
     const numAmount = parseFloat(amount.replace(/[^0-9]/g, ""))
+    const balance = getBalance()
+
+    if (activeTab === "expense" && numAmount > balance) {
+      toast.warning("Pengeluaran melebihi saldo!")
+    }
 
     addTransaction({
       type: activeTab,
@@ -210,16 +215,18 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
     }
   }
 
-  const handleAmountBlur = () => {
-    if (!amount) return
-    const num = amount.replace(/[^0-9]/g, "")
-    if (num) {
-      setAmount(parseInt(num, 10).toLocaleString("id-ID"))
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/[^0-9]/g, "")
+    if (raw) {
+      setAmount(parseInt(raw, 10).toLocaleString("id-ID"))
+    } else {
+      setAmount("")
     }
+    if (errors.amount) setErrors((prev) => ({ ...prev, amount: undefined }))
   }
 
   const handleAmountFocus = () => {
-    setAmount(amount.replace(/\./g, ""))
+    setAmount(amount.replace(/[^0-9]/g, ""))
   }
 
   return (
@@ -261,12 +268,7 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
                 type="text"
                 inputMode="numeric"
                 value={amount}
-                onChange={(e) => {
-                  const val = e.target.value.replace(/[^0-9.]/g, "")
-                  setAmount(val)
-                  if (errors.amount) setErrors((prev) => ({ ...prev, amount: undefined }))
-                }}
-                onBlur={handleAmountBlur}
+                onChange={handleAmountChange}
                 onFocus={handleAmountFocus}
                 aria-invalid={!!errors.amount}
               />

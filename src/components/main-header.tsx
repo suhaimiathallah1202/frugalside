@@ -21,7 +21,7 @@ export function MainHeader() {
         <div className="max-sm:w-9 max-sm:h-9 w-10 h-10 bg-gradient-to-tr from-accent to-primary-container rounded-xl flex items-center justify-center font-black max-sm:text-lg text-xl text-on-primary-fixed shadow-lg shadow-accent/20">
           F
         </div>
-        <h1 className="max-sm:hidden text-2xl font-black tracking-tight text-on-surface dark:text-white">
+        <h1 className="max-sm:text-lg text-2xl font-black tracking-tight text-on-surface dark:text-white">
           Frugal<span className="text-accent">Side</span>
         </h1>
       </div>

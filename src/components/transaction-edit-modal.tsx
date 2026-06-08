@@ -55,7 +55,7 @@ interface TransactionEditModalProps {
 }
 
 export function TransactionEditModal({ transaction, open, onOpenChange }: TransactionEditModalProps) {
-  const { updateTransaction } = useFinanceStore()
+  const { updateTransaction, getBalance } = useFinanceStore()
 
   const [type, setType] = useState<"expense" | "income">(transaction?.type ?? "expense")
   const [amount, setAmount] = useState(transaction?.amount?.toString() ?? "")
@@ -71,11 +71,29 @@ export function TransactionEditModal({ transaction, open, onOpenChange }: Transa
     setCategory(tab === "expense" ? EXPENSE_CATEGORIES[0] : INCOME_CATEGORIES[0])
   }
 
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/[^0-9]/g, "")
+    setAmount(raw ? parseInt(raw, 10).toLocaleString("id-ID") : "")
+  }
+
+  const handleAmountFocus = () => {
+    setAmount(amount.replace(/[^0-9]/g, ""))
+  }
+
   const handleSave = () => {
     const numAmount = parseInt(amount.replace(/[^0-9]/g, ""), 10)
     if (!numAmount || numAmount <= 0) {
       toast.error("Masukkan nominal yang valid")
       return
+    }
+
+    if (type === "expense") {
+      const balance = getBalance()
+      const oldAmount = transaction.type === "expense" ? transaction.amount : 0
+      const balanceWithoutOld = balance + oldAmount
+      if (numAmount > balanceWithoutOld) {
+        toast.warning("Pengeluaran melebihi saldo!")
+      }
     }
 
     updateTransaction(transaction.id, {
@@ -125,7 +143,8 @@ export function TransactionEditModal({ transaction, open, onOpenChange }: Transa
               type="text"
               inputMode="numeric"
               value={amount}
-              onChange={(e) => setAmount(e.target.value.replace(/[^0-9]/g, ""))}
+              onChange={handleAmountChange}
+              onFocus={handleAmountFocus}
               autoFocus
             />
           </div>
