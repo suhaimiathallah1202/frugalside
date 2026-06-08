@@ -74,8 +74,8 @@ export function SpendingChart({ data, transactions = [], currentDate }: Spending
 
   return (
     <section className="lg:col-span-7" data-purpose="spending-analysis">
-      <div className="bg-card border border-on-surface/5 dark:border-white/5 p-8 rounded-3xl h-full flex flex-col shadow-lg dark:shadow-2xl">
-        <div className="flex items-center justify-between mb-6">
+      <div className="bg-card border border-on-surface/5 dark:border-white/5 max-sm:p-4 p-8 rounded-3xl h-full flex flex-col shadow-lg dark:shadow-2xl">
+        <div className="flex items-center justify-between max-sm:mb-4 mb-6">
           <div className="flex items-center gap-2 bg-surface-container-low dark:bg-white/[0.03] p-1 rounded-2xl border border-on-surface/5 dark:border-white/5">
             {([
               { key: "pie", icon: PieChartIcon, label: "Distribusi" },
@@ -84,7 +84,7 @@ export function SpendingChart({ data, transactions = [], currentDate }: Spending
             ] as const).map(({ key, icon: Icon, label }) => (
               <button
                 key={key}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                className={`flex items-center max-sm:gap-1 gap-1.5 max-sm:px-3 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   chartView === key
                     ? "bg-white dark:bg-white/10 text-on-surface dark:text-white shadow-sm"
                     : "text-on-surface/40 dark:text-white/40 hover:text-on-surface dark:hover:text-white"
@@ -92,16 +92,16 @@ export function SpendingChart({ data, transactions = [], currentDate }: Spending
                 onClick={() => setChartView(key)}
               >
                 <Icon className="h-3.5 w-3.5" />
-                {label}
+                <span className="max-sm:hidden">{label}</span>
               </button>
             ))}
           </div>
           <button
-            className="flex items-center gap-1.5 text-xs font-bold text-on-surface/50 dark:text-white/50 hover:text-accent transition-colors cursor-pointer px-3 py-2 rounded-xl hover:bg-on-surface/5 dark:hover:bg-white/5"
+            className="flex items-center gap-1.5 text-xs font-bold text-on-surface/50 dark:text-white/50 hover:text-accent transition-colors cursor-pointer max-sm:px-2 px-3 py-2 rounded-xl hover:bg-on-surface/5 dark:hover:bg-white/5"
             onClick={() => setBudgetModalOpen(true)}
           >
             <Settings2 className="h-3.5 w-3.5" />
-            {hasBudgets ? "Ubah Budget" : "Atur Budget"}
+            <span className="max-sm:hidden">{hasBudgets ? "Ubah Budget" : "Atur Budget"}</span>
           </button>
         </div>
 

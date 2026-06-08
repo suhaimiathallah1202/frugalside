@@ -105,19 +105,19 @@ export default function AnalyticsPage() {
   )
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-8 space-y-8">
-      <div className="flex items-center gap-4">
+    <main className="max-w-4xl mx-auto max-sm:px-4 px-6 py-8 max-sm:space-y-6 space-y-8">
+      <div className="flex items-center max-sm:gap-2 gap-4">
         <Link
           href="/"
-          className="w-10 h-10 flex items-center justify-center rounded-2xl bg-card border border-on-surface/5 dark:border-white/5 hover:border-accent/50 transition-all"
+          className="max-sm:w-9 max-sm:h-9 w-10 h-10 flex items-center justify-center rounded-2xl bg-card border border-on-surface/5 dark:border-white/5 hover:border-accent/50 transition-all"
         >
-          <ArrowLeft className="h-5 w-5 text-on-surface/70" />
+          <ArrowLeft className="max-sm:h-4 max-sm:w-4 h-5 w-5 text-on-surface/70" />
         </Link>
-        <h1 className="text-2xl font-black tracking-tight text-on-surface dark:text-white flex-1">
+        <h1 className="max-sm:text-lg text-2xl font-black tracking-tight text-on-surface dark:text-white flex-1">
           Analisis Keuangan
         </h1>
         <select
-          className="bg-card border border-on-surface/5 dark:border-white/5 rounded-2xl px-4 py-2 text-sm font-bold text-on-surface dark:text-white outline-none cursor-pointer"
+          className="bg-card border border-on-surface/5 dark:border-white/5 rounded-2xl max-sm:px-3 max-sm:py-1.5 px-4 py-2 text-sm font-bold text-on-surface dark:text-white outline-none cursor-pointer"
           value={selectedYear}
           onChange={(e) => setSelectedYear(Number(e.target.value))}
         >
@@ -140,57 +140,57 @@ export default function AnalyticsPage() {
       ) : (
         <>
           {/* Summary Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="bg-card rounded-3xl p-5 shadow-sm ring-1 ring-foreground/5">
+          <div className="grid grid-cols-2 md:grid-cols-3 max-sm:gap-3 gap-4">
+            <div className="bg-card rounded-3xl max-sm:p-4 p-5 shadow-sm ring-1 ring-foreground/5">
               <div className="flex items-center gap-2 mb-2">
                 <TrendingUp className="h-4 w-4 text-success" />
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Pemasukan</span>
               </div>
-              <p className="text-xl font-black text-success">{formatRupiah(totalIncome)}</p>
+              <p className="max-sm:text-lg text-xl font-black text-success">{formatRupiah(totalIncome)}</p>
             </div>
-            <div className="bg-card rounded-3xl p-5 shadow-sm ring-1 ring-foreground/5">
+            <div className="bg-card rounded-3xl max-sm:p-4 p-5 shadow-sm ring-1 ring-foreground/5">
               <div className="flex items-center gap-2 mb-2">
                 <TrendingDown className="h-4 w-4 text-danger" />
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Pengeluaran</span>
               </div>
-              <p className="text-xl font-black text-danger">{formatRupiah(totalExpense)}</p>
+              <p className="max-sm:text-lg text-xl font-black text-danger">{formatRupiah(totalExpense)}</p>
             </div>
-            <div className="bg-card rounded-3xl p-5 shadow-sm ring-1 ring-foreground/5">
+            <div className="bg-card rounded-3xl max-sm:p-4 p-5 shadow-sm ring-1 ring-foreground/5">
               <div className="flex items-center gap-2 mb-2">
                 <Wallet className="h-4 w-4 text-accent" />
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Net</span>
               </div>
-              <p className={`text-xl font-black ${net >= 0 ? "text-success" : "text-danger"}`}>
+              <p className={`max-sm:text-lg text-xl font-black ${net >= 0 ? "text-success" : "text-danger"}`}>
                 {net >= 0 ? "+" : ""}{formatRupiah(net)}
               </p>
             </div>
-            <div className="bg-card rounded-3xl p-5 shadow-sm ring-1 ring-foreground/5">
+            <div className="bg-card rounded-3xl max-sm:p-4 p-5 shadow-sm ring-1 ring-foreground/5">
               <div className="flex items-center gap-2 mb-2">
                 <Zap className="h-4 w-4 text-amber-500" />
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Rata-rata/Bulan</span>
               </div>
-              <p className="text-xl font-black text-amber-500">{formatRupiah(Math.round(avgMonthlyExpense))}</p>
+              <p className="max-sm:text-lg text-xl font-black text-amber-500">{formatRupiah(Math.round(avgMonthlyExpense))}</p>
             </div>
-            <div className="bg-card rounded-3xl p-5 shadow-sm ring-1 ring-foreground/5">
+            <div className="bg-card rounded-3xl max-sm:p-4 p-5 shadow-sm ring-1 ring-foreground/5">
               <div className="flex items-center gap-2 mb-2">
                 <Target className="h-4 w-4 text-purple-500" />
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Kategori Teratas</span>
               </div>
-              <p className="text-xl font-black text-purple-500 truncate">{topCategory}</p>
+              <p className="max-sm:text-lg text-xl font-black text-purple-500 truncate">{topCategory}</p>
             </div>
-            <div className="bg-card rounded-3xl p-5 shadow-sm ring-1 ring-foreground/5">
+            <div className="bg-card rounded-3xl max-sm:p-4 p-5 shadow-sm ring-1 ring-foreground/5">
               <div className="flex items-center gap-2 mb-2">
                 <TrendingDown className="h-4 w-4 text-rose-500" />
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Pengeluaran Tertinggi</span>
               </div>
-              <p className="text-xl font-black text-rose-500 truncate">
+              <p className="max-sm:text-lg text-xl font-black text-rose-500 truncate">
                 {biggestExpense ? formatRupiah(biggestExpense.amount) : "-"}
               </p>
             </div>
           </div>
 
           {/* Category Breakdown */}
-          <section className="bg-card rounded-3xl p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-4">
+          <section className="bg-card rounded-3xl max-sm:p-4 p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 max-sm:space-y-3 space-y-4">
             <h2 className="text-lg font-bold text-on-surface dark:text-white">Pengeluaran per Kategori</h2>
             {categoryTotals.length > 0 ? (
               <div className="h-72">
@@ -222,7 +222,7 @@ export default function AnalyticsPage() {
           </section>
 
           {/* Monthly Trend */}
-          <section className="bg-card rounded-3xl p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-4">
+          <section className="bg-card rounded-3xl max-sm:p-4 p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 max-sm:space-y-3 space-y-4">
             <h2 className="text-lg font-bold text-on-surface dark:text-white">Tren Bulanan</h2>
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
@@ -249,13 +249,13 @@ export default function AnalyticsPage() {
 
           {/* Top Expenses */}
           {topExpenses.length > 0 && (
-            <section className="bg-card rounded-3xl p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-4">
+            <section className="bg-card rounded-3xl max-sm:p-4 p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 max-sm:space-y-3 space-y-4">
               <h2 className="text-lg font-bold text-on-surface dark:text-white">10 Pengeluaran Terbesar</h2>
               <div className="space-y-2">
                 {topExpenses.map((t, i) => (
                   <div
                     key={t.id}
-                    className="flex items-center justify-between px-4 py-3 rounded-2xl bg-surface-container-low dark:bg-white/[0.03]"
+                      className="flex items-center justify-between max-sm:px-3 max-sm:py-2.5 px-4 py-3 rounded-2xl bg-surface-container-low dark:bg-white/[0.03]"
                   >
                     <div className="flex items-center gap-4 min-w-0">
                       <span className="w-6 h-6 rounded-full bg-danger/10 text-danger text-xs font-black flex items-center justify-center shrink-0">

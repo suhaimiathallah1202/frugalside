@@ -224,13 +224,13 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
 
   return (
     <section className="lg:col-span-5 space-y-6" data-purpose="transaction-input">
-      <div className="bg-card border border-on-surface/5 dark:border-white/5 p-8 rounded-3xl h-full shadow-lg dark:shadow-2xl">
-        <h3 className="text-xl font-bold mb-8 flex items-center gap-2 text-on-surface dark:text-white">
+      <div className="bg-card border border-on-surface/5 dark:border-white/5 max-sm:p-5 p-8 rounded-3xl h-full shadow-lg dark:shadow-2xl">
+        <h3 className="text-xl font-bold max-sm:mb-5 mb-8 flex items-center gap-2 text-on-surface dark:text-white">
           <span className="w-1.5 h-6 bg-accent rounded-full" />
           Catat Transaksi
         </h3>
 
-        <form className="space-y-6" onSubmit={(e) => e.preventDefault()} onKeyDown={handleKeyDown}>
+        <form className="max-sm:space-y-4 space-y-6" onSubmit={(e) => e.preventDefault()} onKeyDown={handleKeyDown}>
           <Tabs value={activeTab} onValueChange={handleTabChange}>
             <TabsList className="w-full bg-surface-container-low dark:bg-dark border border-on-surface/5 dark:border-white/5 p-1 rounded-2xl h-auto">
               <TabsTrigger

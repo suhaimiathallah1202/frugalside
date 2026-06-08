@@ -36,7 +36,7 @@ export function QuickStats({
   return (
     <section className="space-y-6" data-purpose="financial-summary">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-br from-accent to-primary-container p-8 rounded-3xl shadow-xl shadow-accent/20 dark:shadow-accent/10 relative overflow-hidden group">
+        <div className="bg-gradient-to-br from-accent to-primary-container max-sm:p-5 p-8 rounded-3xl shadow-xl shadow-accent/20 dark:shadow-accent/10 relative overflow-hidden group">
           <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 dark:bg-white/10 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-500" />
           <p className="text-white/70 font-bold mb-1 uppercase tracking-widest text-xs">Total Saldo</p>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-black mb-4 text-black break-all">{balance}</h2>
@@ -46,10 +46,10 @@ export function QuickStats({
           </div>
         </div>
 
-        <div className="bg-card border border-on-surface/5 dark:border-white/5 p-8 rounded-3xl flex flex-col justify-between hover:border-success/30 transition-all duration-300 shadow-sm dark:shadow-none">
+        <div className="bg-card border border-on-surface/5 dark:border-white/5 max-sm:p-5 p-8 rounded-3xl flex flex-col justify-between hover:border-success/30 transition-all duration-300 shadow-sm dark:shadow-none">
           <div>
             <p className="text-on-surface/40 dark:text-white/40 font-bold mb-1 uppercase tracking-widest text-xs">Pemasukan Bulan Ini</p>
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-success break-all">{monthlyIncome}</h2>
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-success max-sm:break-all break-keep">{monthlyIncome}</h2>
           </div>
           <div className="mt-4 flex items-center gap-2 text-success/70 dark:text-success/60 text-sm font-semibold">
             <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
@@ -59,7 +59,7 @@ export function QuickStats({
           </div>
         </div>
 
-        <div className="bg-card border border-on-surface/5 dark:border-white/5 p-8 rounded-3xl flex flex-col justify-between hover:border-danger/30 transition-all duration-300 shadow-sm dark:shadow-none">
+        <div className="bg-card border border-on-surface/5 dark:border-white/5 max-sm:p-5 p-8 rounded-3xl flex flex-col justify-between hover:border-danger/30 transition-all duration-300 shadow-sm dark:shadow-none">
           <div>
             <p className="text-on-surface/40 dark:text-white/40 font-bold mb-1 uppercase tracking-widest text-xs">Pengeluaran Bulan Ini</p>
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-danger break-all">{monthlyExpense}</h2>
@@ -74,7 +74,7 @@ export function QuickStats({
       </div>
 
       {budgetInfo && budgetInfo.totalBudget > 0 && (
-        <div className="bg-card border border-on-surface/5 dark:border-white/5 p-6 rounded-3xl shadow-sm dark:shadow-none">
+        <div className="bg-card border border-on-surface/5 dark:border-white/5 max-sm:p-4 p-6 rounded-3xl shadow-sm dark:shadow-none">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-black text-on-surface/30 dark:text-white/30 uppercase tracking-widest">
               Total Budget

@@ -27,21 +27,21 @@ export default function SettingsPage() {
   const currentTheme = theme === "system" ? "system" : theme === "dark" ? "dark" : "light"
 
   return (
-    <main className="max-w-2xl mx-auto px-6 py-8 space-y-8">
-      <div className="flex items-center gap-4">
+    <main className="max-w-2xl mx-auto max-sm:px-4 px-6 py-8 max-sm:space-y-6 space-y-8">
+      <div className="flex items-center max-sm:gap-2 gap-4">
         <Link
           href="/"
-          className="w-10 h-10 flex items-center justify-center rounded-2xl bg-card border border-on-surface/5 dark:border-white/5 hover:border-accent/50 transition-all"
+          className="max-sm:w-9 max-sm:h-9 w-10 h-10 flex items-center justify-center rounded-2xl bg-card border border-on-surface/5 dark:border-white/5 hover:border-accent/50 transition-all"
         >
-          <ArrowLeft className="h-5 w-5 text-on-surface/70" />
+          <ArrowLeft className="max-sm:h-4 max-sm:w-4 h-5 w-5 text-on-surface/70" />
         </Link>
-        <h1 className="text-2xl font-black tracking-tight text-on-surface dark:text-white">
+        <h1 className="max-sm:text-lg text-2xl font-black tracking-tight text-on-surface dark:text-white">
           Pengaturan
         </h1>
       </div>
 
       {/* Currency */}
-      <section className="bg-card rounded-3xl p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-4">
+      <section className="bg-card rounded-3xl max-sm:p-5 p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-4">
         <h2 className="text-lg font-bold text-on-surface dark:text-white">Mata Uang</h2>
         <p className="text-sm text-muted-foreground">Pilih mata uang yang digunakan untuk menampilkan seluruh nominal.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -70,7 +70,7 @@ export default function SettingsPage() {
       </section>
 
       {/* Theme */}
-      <section className="bg-card rounded-3xl p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-4">
+      <section className="bg-card rounded-3xl max-sm:p-5 p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-4">
         <h2 className="text-lg font-bold text-on-surface dark:text-white">Tampilan</h2>
         <p className="text-sm text-muted-foreground">Atur tema tampilan sesuai preferensimu.</p>
         <div className="flex gap-3">
@@ -88,15 +88,15 @@ export default function SettingsPage() {
                   : "border-border text-on-surface dark:text-white hover:border-on-surface/20"
               }`}
             >
-              <Icon className="h-5 w-5" />
-              {label}
+              <Icon className="max-sm:h-4 max-sm:w-4 h-5 w-5" />
+              <span className="max-sm:text-xs">{label}</span>
             </button>
           ))}
         </div>
       </section>
 
       {/* Export Format */}
-      <section className="bg-card rounded-3xl p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-4">
+      <section className="bg-card rounded-3xl max-sm:p-5 p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-4">
         <h2 className="text-lg font-bold text-on-surface dark:text-white">Format Ekspor</h2>
         <p className="text-sm text-muted-foreground">Pilih format default saat mengekspor data transaksi.</p>
         <div className="flex gap-3">
@@ -120,7 +120,7 @@ export default function SettingsPage() {
       </section>
 
       {/* Reset Data */}
-      <section className="bg-card rounded-3xl p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-4">
+      <section className="bg-card rounded-3xl max-sm:p-5 p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-4">
         <h2 className="text-lg font-bold text-danger">Reset Data</h2>
         <p className="text-sm text-muted-foreground">
           Hapus semua data transaksi, budget, dan pengaturan berulang. Tindakan ini tidak dapat dibatalkan.
@@ -152,7 +152,7 @@ export default function SettingsPage() {
       </section>
 
       {/* About */}
-      <section className="bg-card rounded-3xl p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-2 text-center">
+      <section className="bg-card rounded-3xl max-sm:p-5 p-6 md:p-8 shadow-sm ring-1 ring-foreground/5 space-y-2 text-center">
         <div className="w-12 h-12 mx-auto bg-gradient-to-tr from-accent to-primary-container rounded-xl flex items-center justify-center font-black text-xl text-on-primary-fixed shadow-lg shadow-accent/20">
           F
         </div>

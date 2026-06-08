@@ -123,7 +123,7 @@ export default function Dashboard() {
   if (!isHydrated) {
     return (
       <div className="min-h-screen pb-20 transition-colors duration-300 bg-dark text-on-surface dark:text-white">
-        <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="max-w-7xl mx-auto max-sm:px-4 px-6 py-8">
           <div className="flex justify-between items-center mb-8">
             <Skeleton className="h-10 w-48" />
             <Skeleton className="h-12 w-12 rounded-2xl" />
@@ -142,9 +142,9 @@ export default function Dashboard() {
     <div className="bg-dark text-on-surface dark:text-white font-sans selection:bg-accent selection:text-black min-h-screen pb-20 transition-colors duration-300">
       <MainHeader />
 
-      <main className="max-w-7xl mx-auto px-6 space-y-8">
+      <main className="max-w-7xl mx-auto max-sm:px-4 px-6 max-sm:space-y-6 space-y-8">
         {transactions.length === 0 && (
-          <div className="bg-gradient-to-br from-accent/10 to-primary-fixed/5 border border-accent/20 rounded-3xl p-8 relative overflow-hidden">
+          <div className="bg-gradient-to-br from-accent/10 to-primary-fixed/5 border border-accent/20 rounded-3xl max-sm:p-5 p-8 relative overflow-hidden">
             <div className="absolute -right-10 -top-10 w-48 h-48 bg-accent/10 rounded-full blur-3xl" />
             <div className="relative">
               <div className="flex items-center gap-3 mb-4">
@@ -189,26 +189,26 @@ export default function Dashboard() {
         )}
 
         {/* Month Navigation */}
-        <div className="flex items-center justify-center gap-4" data-purpose="month-navigation">
+        <div className="flex items-center justify-center max-sm:gap-2 gap-4" data-purpose="month-navigation">
           <button
-            className="w-10 h-10 flex items-center justify-center rounded-xl bg-card border border-on-surface/5 dark:border-white/5 hover:border-accent/50 transition-all cursor-pointer"
+            className="max-sm:w-9 max-sm:h-9 w-10 h-10 flex items-center justify-center rounded-xl bg-card border border-on-surface/5 dark:border-white/5 hover:border-accent/50 transition-all cursor-pointer"
             onClick={goPrevMonth}
             aria-label="Bulan sebelumnya"
           >
-            <ChevronLeft className="h-5 w-5 text-on-surface/70" />
+            <ChevronLeft className="max-sm:h-4 max-sm:w-4 h-5 w-5 text-on-surface/70" />
           </button>
-          <h2 className="text-lg font-bold text-on-surface dark:text-white min-w-[200px] text-center">
+          <h2 className="max-sm:text-sm text-lg font-bold text-on-surface dark:text-white max-sm:min-w-0 min-w-[200px] text-center max-sm:truncate">
             {monthLabel}
           </h2>
           <button
-            className={`w-10 h-10 flex items-center justify-center rounded-xl bg-card border border-on-surface/5 dark:border-white/5 hover:border-accent/50 transition-all cursor-pointer ${
+            className={`max-sm:w-9 max-sm:h-9 w-10 h-10 flex items-center justify-center rounded-xl bg-card border border-on-surface/5 dark:border-white/5 hover:border-accent/50 transition-all cursor-pointer ${
               !canGoNext ? "opacity-30 cursor-not-allowed" : ""
             }`}
             onClick={canGoNext ? goNextMonth : undefined}
             aria-label="Bulan berikutnya"
             disabled={!canGoNext}
           >
-            <ChevronRight className="h-5 w-5 text-on-surface/70" />
+            <ChevronRight className="max-sm:h-4 max-sm:w-4 h-5 w-5 text-on-surface/70" />
           </button>
         </div>
 

@@ -72,20 +72,20 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
   return (
     <section className="pb-10" data-purpose="transaction-history">
       <div className="bg-card border border-on-surface/5 dark:border-white/5 rounded-3xl overflow-hidden shadow-lg dark:shadow-2xl">
-        <div className="p-8 border-b border-on-surface/5 dark:border-white/5 flex justify-between items-center">
-          <h3 className="text-xl font-bold flex items-center gap-2 text-on-surface dark:text-white">
+        <div className="max-sm:p-5 p-8 border-b border-on-surface/5 dark:border-white/5 flex justify-between items-center">
+          <h3 className="max-sm:text-lg text-xl font-bold flex items-center gap-2 text-on-surface dark:text-white">
             <span className="w-1.5 h-6 bg-accent rounded-full" />
             Riwayat Transaksi
           </h3>
           {filtered.length > 0 && (
-            <span className="text-xs text-on-surface/40 dark:text-white/40 font-medium">
+            <span className="text-xs text-on-surface/40 dark:text-white/40 font-medium whitespace-nowrap ml-2">
               {filtered.length} {filtered.length !== transactions.length ? `dari ${transactions.length}` : ""} transaksi
             </span>
           )}
         </div>
 
         {transactions.length > 0 && (
-          <div className="px-4 pb-3 space-y-3">
+          <div className="max-sm:px-3 px-4 pb-3 space-y-3">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-on-surface/30 dark:text-white/30" />
               <input
@@ -103,11 +103,11 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
                 </button>
               )}
             </div>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center max-sm:overflow-x-auto max-sm:flex-nowrap gap-2 max-sm:pb-1">
               {(["all", "expense", "income"] as const).map((t) => (
                 <button
                   key={t}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  className={`shrink-0 max-sm:px-3 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     typeFilter === t
                       ? "bg-accent text-on-primary-fixed shadow-sm"
                       : "bg-surface-container-low dark:bg-white/5 text-on-surface/50 dark:text-white/50 hover:text-on-surface dark:hover:text-white"
@@ -117,9 +117,9 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
                   {t === "all" ? "Semua" : t === "expense" ? "Pengeluaran" : "Pemasukan"}
                 </button>
               ))}
-              <div className="w-px h-5 bg-on-surface/10 dark:bg-white/10 mx-1" />
+              <div className="shrink-0 w-px h-5 bg-on-surface/10 dark:bg-white/10 mx-1" />
               <select
-                className="bg-surface-container-low dark:bg-white/5 border-none rounded-xl px-3 py-2 text-xs font-medium text-on-surface/50 dark:text-white/50 outline-none cursor-pointer"
+                className="shrink-0 bg-surface-container-low dark:bg-white/5 border-none rounded-xl px-3 py-2 text-xs font-medium text-on-surface/50 dark:text-white/50 outline-none cursor-pointer"
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
               >
@@ -151,7 +151,7 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
           ) : filtered.length > 0 ? (
             <>
               {/* Mobile swipeable cards */}
-              <div className="block md:hidden space-y-2 px-2 pb-2">
+              <div className="block md:hidden space-y-2 pb-2">
                 {filtered.map((t) => (
                   <SwipeableRow
                     key={t.id}
@@ -177,7 +177,7 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
                     onSwipeRight={() => setEditingTransaction(t)}
                   >
                     <div
-                      className="flex items-center justify-between px-4 py-4 rounded-2xl bg-card border border-on-surface/5 dark:border-white/5 cursor-default select-none"
+                      className="flex items-center justify-between max-sm:px-3 max-sm:py-3 px-4 py-4 rounded-2xl bg-card border border-on-surface/5 dark:border-white/5 cursor-default select-none"
                     >
                       <div className="flex flex-col gap-1 min-w-0 flex-1">
                         <div className="flex items-center gap-2">
