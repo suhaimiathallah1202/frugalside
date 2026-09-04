@@ -150,7 +150,7 @@ function TransactionList({
                   {selectionMode && <th className="py-3 px-2 w-[40px]" />}
                   <th className="py-3 px-4">Kategori</th>
                   <th className="py-3 px-4 text-right">Nominal</th>
-                  {!selectionMode && <th className="py-3 px-4 w-[80px]" />}
+                  {!selectionMode && <th className="hidden md:table-cell py-3 px-4 w-[80px]" />}
                 </tr>
               </thead>
               <tbody>
@@ -195,7 +195,7 @@ function TransactionList({
                       {t.type === "income" ? "+" : "-"} {formatRupiah(t.amount)}
                     </td>
                     {!selectionMode && (
-                      <td className="py-4 px-4 text-right">
+                      <td className="hidden md:table-cell py-4 px-4 text-right">
                         <div className="flex items-center justify-end gap-1">
                           <button
                             className="p-2 text-on-surface/30 dark:text-white/30 hover:text-accent rounded-xl hover:bg-on-surface/5 dark:hover:bg-white/5 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer"
