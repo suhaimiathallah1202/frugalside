@@ -17,7 +17,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { TransactionEditModal } from "@/components/transaction-edit-modal"
 import { CategoryIcon } from "@/components/transaction-form"
-import { SwipeableRow } from "@/components/swipeable-row"
 import { toast } from "sonner"
 import { useState, useMemo } from "react"
 
@@ -91,125 +90,66 @@ function TransactionItem({
   }
 
   return (
-    <>
-      {/* Mobile */}
-      <div className="block md:hidden">
-        <SwipeableRow
-          leftAction={
-            <button
-              className="flex items-center gap-2 px-5 py-4 ml-2 rounded-2xl bg-accent text-accent-foreground font-bold text-sm cursor-pointer"
-              onClick={() => onEdit(t)}
-            >
-              <Pencil className="h-4 w-4" />
-              Edit
-            </button>
-          }
-          rightAction={
-            <button
-              className="flex items-center gap-2 px-5 py-4 mr-2 rounded-2xl bg-danger text-white font-bold text-sm cursor-pointer"
-              onClick={() => setPendingDeleteId(t.id)}
-            >
-              <Trash2 className="h-4 w-4" />
-              Hapus
-            </button>
-          }
-          onSwipeLeft={() => setPendingDeleteId(t.id)}
-          onSwipeRight={() => onEdit(t)}
-        >
-          <div className="flex items-center gap-3 px-4 py-3.5 bg-card border border-on-surface/5 dark:border-white/5 cursor-default select-none active:bg-on-surface/5 dark:active:bg-white/5 transition-colors">
-            <span className="text-sm font-medium text-on-surface/70 dark:text-white/70 truncate">
-              {t.category}
-            </span>
-          </div>
-        </SwipeableRow>
-        {pendingDeleteId && (
-          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4 pb-6 sm:pb-4">
-            <div className="bg-card rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-200">
-              <h3 className="text-lg font-bold text-on-surface dark:text-white">Hapus Transaksi</h3>
-              <p className="text-sm text-muted-foreground">
-                Yakin ingin menghapus transaksi ini? Tindakan ini tidak dapat dibatalkan.
-              </p>
-              <div className="flex gap-3">
-                <button
-                  className="flex-1 px-4 py-3.5 rounded-2xl border border-border text-on-surface dark:text-white font-semibold text-sm cursor-pointer active:scale-[0.98] transition-transform"
-                  onClick={() => setPendingDeleteId(null)}
-                >
-                  Batal
-                </button>
-                <button
-                  className="flex-1 px-4 py-3.5 rounded-2xl bg-danger text-white font-bold text-sm cursor-pointer active:scale-[0.98] transition-transform"
-                  onClick={handleDelete}
-                >
-                  Ya, Hapus
-                </button>
+    <tr className="border-b border-on-surface/5 dark:border-white/5 hover:bg-on-surface/5 dark:hover:bg-white/5 transition-colors group">
+      <td className="py-4 px-4">
+        <div className="flex items-center gap-3">
+          <CategoryIcon name={t.category} />
+          <div className="flex flex-col gap-1 min-w-0">
+            {t.description && (
+              <div className="text-sm text-on-surface/70 dark:text-white/70 line-clamp-1 max-w-[200px] md:max-w-xs">
+                {t.description}
               </div>
-            </div>
+            )}
           </div>
-        )}
-      </div>
-
-      {/* Desktop */}
-      <tr className="border-b border-on-surface/5 dark:border-white/5 hover:bg-on-surface/5 dark:hover:bg-white/5 transition-colors group">
-        <td className="py-4 px-4">
-          <div className="flex items-center gap-3">
-            <CategoryIcon name={t.category} />
-            <div className="flex flex-col gap-1 min-w-0">
-              {t.description && (
-                <div className="text-sm text-on-surface/70 dark:text-white/70 line-clamp-1 max-w-[200px] md:max-w-xs">
-                  {t.description}
-                </div>
-              )}
-            </div>
-          </div>
-        </td>
-        <td
-          className={`py-4 px-4 text-right font-black ${
-            t.type === "income" ? "text-success" : "text-danger"
-          }`}
-        >
-          {t.type === "income" ? "+" : "-"} {formatRupiah(t.amount)}
-        </td>
-        <td className="py-4 px-4 text-right">
-          <div className="flex items-center justify-end gap-1">
-            <button
-              className="p-2 text-on-surface/30 dark:text-white/30 hover:text-accent rounded-xl hover:bg-on-surface/5 dark:hover:bg-white/5 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer"
-              aria-label="Edit Transaksi"
-              onClick={() => onEdit(t)}
-            >
-              <Pencil className="h-5 w-5" />
-            </button>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <button
-                  className="p-2 text-on-surface/30 dark:text-white/30 hover:text-danger rounded-xl hover:bg-on-surface/5 dark:hover:bg-white/5 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer"
-                  aria-label="Hapus Transaksi"
-                  onClick={() => setPendingDeleteId(t.id)}
-                >
-                  <Trash2 className="h-5 w-5" />
-                </button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Hapus Transaksi</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Yakin ingin menghapus transaksi {t.category} sebesar{" "}
-                    {formatRupiah(t.amount)}? Tindakan ini tidak dapat dibatalkan.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel onClick={() => setPendingDeleteId(null)}>
-                    Batal
-                  </AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDelete}>
-                    Ya, Hapus
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        </td>
-      </tr>
-    </>
+        </div>
+      </td>
+      <td
+        className={`py-4 px-4 text-right font-black ${
+          t.type === "income" ? "text-success" : "text-danger"
+        }`}
+      >
+        {t.type === "income" ? "+" : "-"} {formatRupiah(t.amount)}
+      </td>
+      <td className="py-4 px-4 text-right">
+        <div className="flex items-center justify-end gap-1">
+          <button
+            className="p-2 text-on-surface/30 dark:text-white/30 hover:text-accent rounded-xl hover:bg-on-surface/5 dark:hover:bg-white/5 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer"
+            aria-label="Edit Transaksi"
+            onClick={() => onEdit(t)}
+          >
+            <Pencil className="h-5 w-5" />
+          </button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                className="p-2 text-on-surface/30 dark:text-white/30 hover:text-danger rounded-xl hover:bg-on-surface/5 dark:hover:bg-white/5 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer"
+                aria-label="Hapus Transaksi"
+                onClick={() => setPendingDeleteId(t.id)}
+              >
+                <Trash2 className="h-5 w-5" />
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Hapus Transaksi</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Yakin ingin menghapus transaksi {t.category} sebesar{" "}
+                  {formatRupiah(t.amount)}? Tindakan ini tidak dapat dibatalkan.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setPendingDeleteId(null)}>
+                  Batal
+                </AlertDialogCancel>
+                <AlertDialogAction onClick={handleDelete}>
+                  Ya, Hapus
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </td>
+    </tr>
   )
 }
 
@@ -257,21 +197,8 @@ function TransactionList({
             </span>
           </div>
 
-          {/* Mobile cards */}
-          <div className="block md:hidden space-y-1.5">
-            {group.transactions.map((t) => (
-              <TransactionItem
-                key={t.id}
-                t={t}
-                formatRupiah={formatRupiah}
-                onEdit={onEdit}
-                onDelete={onDelete}
-              />
-            ))}
-          </div>
-
           {/* Desktop table */}
-          <div className="hidden md:block overflow-x-auto">
+          <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-on-surface/5 dark:border-white/5 text-xs font-black text-on-surface/30 dark:text-white/30 uppercase tracking-widest">
