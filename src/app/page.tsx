@@ -87,14 +87,14 @@ export default function Dashboard() {
   )
 
   const spendStatus = useMemo(() => {
-    if (balance > 0 && monthlyExpense <= monthlyIncome * 0.7) {
+    if (balance > 500000) {
       return { label: "Safe to spend", color: "bg-white/20 text-white/90", dotColor: "bg-white" }
     }
-    if (balance > 0 && monthlyExpense <= monthlyIncome) {
+    if (balance > 0) {
       return { label: "Hemat-hemat", color: "bg-amber-500/30 text-amber-100", dotColor: "bg-amber-300" }
     }
     return { label: "Hati-hati", color: "bg-red-500/30 text-red-100", dotColor: "bg-red-300" }
-  }, [balance, monthlyIncome, monthlyExpense])
+  }, [balance])
 
   const budgetInfo = useMemo(() => {
     const totalBudget = Object.values(budgets).reduce((acc, v) => acc + v, 0)
