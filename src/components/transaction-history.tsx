@@ -116,42 +116,38 @@ function TransactionItem({
           onSwipeLeft={() => setPendingDeleteId(t.id)}
           onSwipeRight={() => onEdit(t)}
         >
-          <div className="flex items-center justify-between max-sm:px-3 max-sm:py-3 px-4 py-4 rounded-2xl bg-card border border-on-surface/5 dark:border-white/5 cursor-default select-none">
-            <div className="flex items-center gap-3 min-w-0 flex-1">
-              <CategoryIcon name={t.category} />
-              <div className="flex flex-col gap-1 min-w-0 flex-1">
-                {t.description && (
-                  <span className="text-sm text-on-surface/70 dark:text-white/70 truncate">
-                    {t.description}
-                  </span>
-                )}
-              </div>
+          <div className="flex items-center gap-3 px-4 py-3.5 bg-card border border-on-surface/5 dark:border-white/5 cursor-default select-none active:bg-on-surface/5 dark:active:bg-white/5 transition-colors">
+            <CategoryIcon name={t.category} size="sm" />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-on-surface dark:text-white truncate">
+                {t.description || t.category}
+              </p>
             </div>
             <span
-              className={`shrink-0 ml-3 font-black text-sm ${
+              className={`shrink-0 font-bold text-sm tabular-nums ${
                 t.type === "income" ? "text-success" : "text-danger"
               }`}
             >
-              {t.type === "income" ? "+" : "-"} {formatRupiah(t.amount)}
+              {t.type === "income" ? "+" : "-"}{formatRupiah(t.amount)}
             </span>
           </div>
         </SwipeableRow>
         {pendingDeleteId && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div className="bg-card rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4">
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4 pb-6 sm:pb-4">
+            <div className="bg-card rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-200">
               <h3 className="text-lg font-bold text-on-surface dark:text-white">Hapus Transaksi</h3>
               <p className="text-sm text-muted-foreground">
                 Yakin ingin menghapus transaksi ini? Tindakan ini tidak dapat dibatalkan.
               </p>
               <div className="flex gap-3">
                 <button
-                  className="flex-1 px-4 py-3 rounded-2xl border border-border text-on-surface dark:text-white font-semibold text-sm cursor-pointer"
+                  className="flex-1 px-4 py-3.5 rounded-2xl border border-border text-on-surface dark:text-white font-semibold text-sm cursor-pointer active:scale-[0.98] transition-transform"
                   onClick={() => setPendingDeleteId(null)}
                 >
                   Batal
                 </button>
                 <button
-                  className="flex-1 px-4 py-3 rounded-2xl bg-danger text-white font-bold text-sm cursor-pointer"
+                  className="flex-1 px-4 py-3.5 rounded-2xl bg-danger text-white font-bold text-sm cursor-pointer active:scale-[0.98] transition-transform"
                   onClick={handleDelete}
                 >
                   Ya, Hapus
@@ -256,7 +252,7 @@ function TransactionList({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 md:space-y-4">
       {dateGroups.map((group) => (
         <div key={group.date}>
           {/* Date header */}
@@ -264,7 +260,7 @@ function TransactionList({
             <h4 className="text-xs font-bold text-on-surface/50 dark:text-white/50 uppercase tracking-wide">
               {group.label}
             </h4>
-            <span className={`text-xs font-bold ${
+            <span className={`text-xs font-bold tabular-nums ${
               redTotal ? "text-danger" : group.total >= 0 ? "text-success" : "text-danger"
             }`}>
               {formatRupiah(group.total)}
@@ -272,7 +268,7 @@ function TransactionList({
           </div>
 
           {/* Mobile cards */}
-          <div className="block md:hidden space-y-2">
+          <div className="block md:hidden space-y-1.5">
             {group.transactions.map((t) => (
               <TransactionItem
                 key={t.id}
