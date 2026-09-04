@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useFinanceStore } from "@/hooks/use-finance-store"
 import { useRecurringStore } from "@/hooks/use-recurring-store"
 import { toast } from "sonner"
+
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Select,
@@ -84,7 +85,7 @@ const CATEGORY_STYLE: Record<string, CategoryStyle> = {
   },
 }
 
-function CategoryIcon({ name, size = "md" }: { name: string; size?: "sm" | "md" }) {
+export function CategoryIcon({ name, size = "md" }: { name: string; size?: "sm" | "md" }) {
   const cfg = CATEGORY_STYLE[name]
   if (!cfg) return null
   const dim = size === "sm" ? "w-6 h-6 rounded-md" : "w-7 h-7 rounded-lg"
@@ -233,10 +234,12 @@ export function TransactionForm({ selectedMonth }: TransactionFormProps) {
   return (
     <section className="lg:col-span-5 space-y-6" data-purpose="transaction-input">
       <div className="bg-card border border-on-surface/5 dark:border-white/5 max-sm:p-5 p-8 rounded-3xl h-full shadow-lg dark:shadow-2xl">
-        <h3 className="text-xl font-bold max-sm:mb-5 mb-8 flex items-center gap-2 text-on-surface dark:text-white">
-          <span className="w-1.5 h-6 bg-accent rounded-full" />
-          Catat Transaksi
-        </h3>
+        <div className="flex items-center justify-between max-sm:mb-5 mb-8">
+          <h3 className="text-xl font-bold flex items-center gap-2 text-on-surface dark:text-white">
+            <span className="w-1.5 h-6 bg-accent rounded-full" />
+            Catat Transaksi
+          </h3>
+        </div>
 
         <form className="max-sm:space-y-4 space-y-6" onSubmit={(e) => e.preventDefault()} onKeyDown={handleKeyDown}>
           <Tabs value={activeTab} onValueChange={handleTabChange}>

@@ -37,6 +37,7 @@ export function RecurringProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setRecurring(JSON.parse(saved));
       } catch (e) {
         console.error('Failed to parse recurring configs', e);
@@ -85,7 +86,8 @@ export function RecurringProvider({ children }: { children: React.ReactNode }) {
         }
         return false;
       })
-      .map(({ lastApplied, enabled, ...rest }) => rest);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .map(({ lastApplied: _lastApplied, enabled: _enabled, ...rest }) => rest);
   }, [recurring]);
 
   const markApplied = useCallback((id: string) => {

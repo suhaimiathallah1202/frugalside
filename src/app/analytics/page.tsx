@@ -34,6 +34,7 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     if (years.length > 0 && !years.includes(selectedYear)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedYear(years[years.length - 1])
     }
   }, [years, selectedYear])

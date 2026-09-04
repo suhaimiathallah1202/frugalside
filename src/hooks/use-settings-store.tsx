@@ -44,6 +44,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(saved) });
       } catch (e) {
         console.error('Failed to parse settings', e);

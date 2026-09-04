@@ -150,7 +150,7 @@ export function TransactionEditModal({ transaction, open, onOpenChange }: Transa
               inputMode="numeric"
               value={amount}
               onChange={(e) => { handleAmountChange(e); setBalanceError("") }}
-              onFocus={(e) => { handleAmountFocus(); setBalanceError("") }}
+              onFocus={() => { handleAmountFocus(); setBalanceError("") }}
               autoFocus
             />
             {balanceError && (

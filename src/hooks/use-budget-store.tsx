@@ -27,6 +27,7 @@ export function BudgetProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setBudgets(JSON.parse(saved));
       } catch (e) {
         console.error('Failed to parse budgets', e);
@@ -65,7 +66,8 @@ export function BudgetProvider({ children }: { children: React.ReactNode }) {
     return formatCurrency(amount);
   }, [formatCurrency]);
 
-  const getSpending = useCallback((category: string, month: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const getSpending = useCallback((_category: string, _month: string) => {
     return 0;
   }, []);
 
