@@ -117,13 +117,8 @@ function TransactionItem({
           onSwipeRight={() => onEdit(t)}
         >
           <div className="flex items-center gap-3 px-4 py-3.5 bg-card border border-on-surface/5 dark:border-white/5 cursor-default select-none active:bg-on-surface/5 dark:active:bg-white/5 transition-colors">
-            <CategoryIcon name={t.category} size="sm" />
-            <span
-              className={`ml-auto font-bold text-sm tabular-nums ${
-                t.type === "income" ? "text-success" : "text-danger"
-              }`}
-            >
-              {t.type === "income" ? "+" : "-"}{formatRupiah(t.amount)}
+            <span className="text-sm font-medium text-on-surface/70 dark:text-white/70 truncate">
+              {t.category}
             </span>
           </div>
         </SwipeableRow>
