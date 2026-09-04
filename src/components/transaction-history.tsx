@@ -118,13 +118,8 @@ function TransactionItem({
         >
           <div className="flex items-center gap-3 px-4 py-3.5 bg-card border border-on-surface/5 dark:border-white/5 cursor-default select-none active:bg-on-surface/5 dark:active:bg-white/5 transition-colors">
             <CategoryIcon name={t.category} size="sm" />
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-on-surface dark:text-white truncate">
-                {t.description || t.category}
-              </p>
-            </div>
             <span
-              className={`shrink-0 font-bold text-sm tabular-nums ${
+              className={`flex-1 min-w-0 font-bold text-sm tabular-nums ${
                 t.type === "income" ? "text-success" : "text-danger"
               }`}
             >
